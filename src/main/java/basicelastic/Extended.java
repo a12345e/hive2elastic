@@ -1,7 +1,9 @@
 package basicelastic;
+
 import org.apache.spark.sql.*;
 import org.elasticsearch.spark.rdd.EsSpark;
 import org.elasticsearch.spark.sql.EsSparkSQL;
+import java.io.Serializable;
 import scala.Tuple2;
 import scala.collection.JavaConversions;
 
@@ -10,9 +12,13 @@ import java.util.Map;
 import java.util.HashMap;
 import java.util.stream.Collectors;
 
-public class Basic {
+
+public class Extended implements Serializable {
     public static void main(String[] args) {
-         SparkSession spark = SparkSession
+
+    }
+    public void run(){
+        SparkSession spark = SparkSession
                 .builder()
                 .appName("some app").
                 enableHiveSupport()
@@ -32,12 +38,7 @@ public class Basic {
                 .collect(Collectors.toList());
         scala.collection.Map scalaMap = scala.collection.Map$.MODULE$.apply(JavaConversions.asScalaBuffer(tuples).toSeq());
         EsSparkSQL.saveToEs(dset,"alon-first/doc",scalaMap);
-        //EsSpark.saveJsonToEs(dset,"alon-index-first/doc",scalaMap);
-//        spark.close();
-//        System.out.println("Alon had good run");
-//        System.err.println("Alon had bad run");
+
 
     }
-
-
 }
